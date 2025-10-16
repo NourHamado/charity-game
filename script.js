@@ -6,6 +6,7 @@ const endScreen = document.getElementById('end-screen');
 const endMessage = document.getElementById('end-message');
 const playAgainBtn = document.getElementById('play-again-btn');
 const progressBarFill = document.getElementById('progress-bar-fill');
+const difficultySelect = document.getElementById('difficulty'); // Get difficulty select
 
 // Game state variables
 let bucket = null;
@@ -20,13 +21,40 @@ let gameRunning = false;
 let dirtyRatio = 0.2; // starts with 20% dirty
 let lastFill = 0; // for lose condition
 
+// Difficulty settings
+const DIFFICULTY_SETTINGS = {
+    easy: {
+        winGoal: 100,         // Fill to 70% to win
+        dropSpeed: 1.5,      // Drops fall slower
+        dropSpawnRate: 1100, // Drops spawn less often
+        dirtyRatio: 0.12     // Fewer dirty drops
+    },
+    normal: {
+        winGoal: 100,
+        dropSpeed: 2.2,
+        dropSpawnRate: 700,
+        dirtyRatio: 0.2
+    },
+    hard: {
+        winGoal: 100,        // Must overfill bucket to win
+        dropSpeed: 3.5,      // Drops fall faster
+        dropSpawnRate: 500,  // Drops spawn more often
+        dirtyRatio: 0.35     // More dirty drops
+    }
+};
+
+let difficulty = 'normal'; // Default difficulty
+let winGoal = 100;         // How much progress needed to win
+
 // Utility: get game area width
 function getGameWidth() {
-    // Use max-width for calculations
-    if (window.innerWidth < 600) {
-        return 240;
-    }
-    return 340;
+    // Use actual game area width for calculations
+    return gameArea.clientWidth || 340;
+}
+
+// Utility: get game area height
+function getGameHeight() {
+    return gameArea.clientHeight || 400;
 }
 
 // Show title screen
@@ -50,10 +78,27 @@ function showEndScreen(win) {
     drops.forEach(d => d.el.remove());
     drops = [];
     bucket && bucket.remove();
+
+    // Play win or lose sound
     if (win) {
-        endMessage.textContent = 'Congratulations!\nEvery drop matters. Millions still don’t have access to clean water.';
-        showConfetti(); // Show confetti effect when user wins
+        // Play win audio
+        const winAudio = new Audio('audio/game-win.mp3');
+        winAudio.play();
+        // Show different win messages for each difficulty
+        let msg = '';
+        if (difficulty === 'easy') {
+            msg = 'Great job! You filled most of the bucket. Try harder modes for a bigger challenge!';
+        } else if (difficulty === 'hard') {
+            msg = 'Amazing! You overfilled the bucket in Hard mode!';
+        } else {
+            msg = 'Congratulations!\nEvery drop matters. Millions still don’t have access to clean water.';
+        }
+        endMessage.textContent = msg;
+        showConfetti();
     } else {
+        // Play lose audio
+        const loseAudio = new Audio('audio/game-over.mp3');
+        loseAudio.play();
         endMessage.textContent = 'Try again. Avoid the dirty drops.';
     }
     endScreen.style.display = '';
@@ -96,13 +141,21 @@ function showConfetti() {
 // Start or restart the game
 function startGame() {
     showGameArea();
-    // Reset progress
+    // Get selected difficulty
+    difficulty = difficultySelect.value;
+    // Set difficulty settings
+    const settings = DIFFICULTY_SETTINGS[difficulty];
+    winGoal = settings.winGoal;
+    dropSpeed = settings.dropSpeed;
+    dropSpawnRate = settings.dropSpawnRate;
+    dirtyRatio = settings.dirtyRatio;
     progress = 0;
     lastFill = 0;
     updateProgressBar(); // <-- update progress bar on start
-    // Make the bucket a little bit bigger: 110px desktop, 75px mobile
-    bucketWidth = window.innerWidth < 600 ? 75 : 110;
-    bucketX = (getGameWidth() - bucketWidth) / 2;
+    // Use actual game area size for bucket sizing
+    const gw = getGameWidth();
+    bucketWidth = Math.max(75, Math.min(110, gw * 0.22)); // 22% of game area width, min 75, max 110
+    bucket
     // Create bucket as image
     bucket = document.createElement('img');
     bucket.src = 'img/water-can-transparent.png';
@@ -119,9 +172,6 @@ function startGame() {
     drops.forEach(d => d.el.remove());
     drops = [];
     // Start drop spawning
-    dropSpeed = 2;
-    dropSpawnRate = 700;
-    dirtyRatio = 0.2;
     gameRunning = true;
     dropInterval = setInterval(spawnDrop, dropSpawnRate);
     requestAnimationFrame(gameLoop);
@@ -132,12 +182,24 @@ function spawnDrop() {
     if (!gameRunning) return;
     // Increase difficulty over time
     // Dirty drops become more frequent as time passes
-    dirtyRatio = Math.min(0.95, dirtyRatio + 0.01); // Increase faster and allow up to 95%
-    dropSpeed = Math.min(8, dropSpeed + 0.02);
-    dropSpawnRate = Math.max(300, dropSpawnRate - 4);
-    // Make drops a little bit bigger: 48px desktop, 34px mobile
-    const dropW = window.innerWidth < 600 ? 34 : 48;
-    const x = Math.random() * (getGameWidth() - dropW);
+    // For easy mode, increase dirtyRatio slower and cap lower
+    if (difficulty === 'easy') {
+        dirtyRatio = Math.min(0.35, dirtyRatio + 0.005);
+        dropSpeed = Math.min(3, dropSpeed + 0.01);
+        dropSpawnRate = Math.max(700, dropSpawnRate - 2);
+    } else if (difficulty === 'hard') {
+        dirtyRatio = Math.min(0.95, dirtyRatio + 0.007);
+        dropSpeed = Math.min(10, dropSpeed + 0.05);
+        dropSpawnRate = Math.max(250, dropSpawnRate - 8);
+    } else {
+        dirtyRatio = Math.min(0.95, dirtyRatio + 0.01);
+        dropSpeed = Math.min(8, dropSpeed + 0.02);
+        dropSpawnRate = Math.max(300, dropSpawnRate - 4);
+    }
+    // Use actual game area size for drop sizing
+    const gw = getGameWidth();
+    const dropW = Math.max(34, Math.min(48, gw * 0.13)); // 13% of game area width, min 34, max 48
+    const x = Math.random() * (gw - dropW);
     // Random clean/dirty
     const isDirty = Math.random() < dirtyRatio; // More likely to be dirty as dirtyRatio increases
     // Create drop as image
@@ -160,8 +222,8 @@ function gameLoop() {
     drops.forEach((d, i) => {
         d.y += dropSpeed;
         d.el.style.top = `${d.y}px`;
-        // Get bucket top position
-        const bucketTop = gameArea.clientHeight - 10 - bucket.offsetHeight;
+        // Get bucket top position using actual game area height
+        const bucketTop = getGameHeight() - 10 - bucket.offsetHeight;
         // Calculate drop center X
         const dropCenterX = d.x + d.w / 2;
         // Accept drop only if its center is above the bucket and its top touches bucket top
@@ -183,6 +245,10 @@ function gameLoop() {
 
 // Handle catching a drop
 function handleDropCatch(drop) {
+    // Play water sound when a drop enters the bucket
+    const waterAudio = new Audio('audio/water.m4a');
+    waterAudio.play();
+
     // Splash animation at the top of the bucket
     const splash = document.createElement('img');
     // Use different splash images for clean and dirty drops
@@ -201,21 +267,78 @@ function handleDropCatch(drop) {
 
     // Update progress
     if (!drop.dirty) {
-        progress = Math.min(100, progress + 10);
+        progress = Math.min(winGoal, progress + 10);
         flashProgressBar('green');
     } else {
         progress = Math.max(0, progress - 15);
         flashProgressBar('red');
     }
-    updateProgressBar(); // <-- update progress bar after drop
+    updateProgressBar();
+
+    // Check for milestones
+    MILESTONES.forEach(milestone => {
+        // Only show if not already shown and score just reached or passed
+        if (
+            progress >= milestone.score &&
+            !shownMilestones.includes(milestone.score) &&
+            (progress - 10 < milestone.score) // Only trigger when crossing the milestone
+        ) {
+            showMilestoneMessage(milestone.message);
+            shownMilestones.push(milestone.score);
+        }
+    });
 
     // Win/lose check
-    if (progress >= 100) {
+    if (progress >= winGoal) {
         showEndScreen(true);
     } else if (progress <= 0 && lastFill > 0) {
         showEndScreen(false);
     }
     lastFill = progress;
+}
+
+// Milestone messages for progress
+const MILESTONES = [
+    { score: 10, message: "Great start!" },
+    { score: 50, message: "Halfway there!" },
+    { score: 80, message: "Almost full!" }
+];
+
+// Track which milestones have been shown
+let shownMilestones = [];
+
+// Show a milestone message above the progress bar
+function showMilestoneMessage(msg) {
+    // Try to find an existing milestone message element
+    let milestoneEl = document.getElementById('milestone-message');
+    if (!milestoneEl) {
+        // If not found, create one
+        milestoneEl = document.createElement('div');
+        milestoneEl.id = 'milestone-message';
+        // Center in the game area
+        milestoneEl.style.position = 'absolute';
+        milestoneEl.style.top = '50%';
+        milestoneEl.style.left = '50%';
+        milestoneEl.style.transform = 'translate(-50%, -50%)';
+        milestoneEl.style.background = '#FFC907';
+        milestoneEl.style.color = '#174A7C';
+        milestoneEl.style.fontWeight = 'bold';
+        milestoneEl.style.fontFamily = "'Montserrat', Arial, sans-serif";
+        milestoneEl.style.fontSize = '1.3em';
+        milestoneEl.style.padding = '16px 32px';
+        milestoneEl.style.borderRadius = '24px';
+        milestoneEl.style.boxShadow = '0 2px 8px rgba(46,157,247,0.08)';
+        milestoneEl.style.zIndex = '20';
+        milestoneEl.style.opacity = '0.97';
+        milestoneEl.style.pointerEvents = 'none';
+        gameArea.appendChild(milestoneEl);
+    }
+    milestoneEl.textContent = msg;
+    milestoneEl.style.display = 'block';
+    // Hide after 1.5 seconds
+    setTimeout(() => {
+        if (milestoneEl) milestoneEl.style.display = 'none';
+    }, 1500);
 }
 
 // Update progress bar fill

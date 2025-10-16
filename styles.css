@@ -53,48 +53,58 @@ Secondary Colors:
 
 /* Center and narrow game area */
 #game-area {
-    max-width: 340px;
+    width: 100vw;
+    height: 60vh;
+    max-width: 540px;
+    max-height: 600px;
+    min-width: 220px;
+    min-height: 220px;
     margin: 0 auto;
-    height: 400px;
     background: #eaf6fb;
     overflow: hidden;
     border-radius: 16px;
     box-shadow: 0 2px 12px rgba(46,157,247,0.08);
+    position: relative;
 }
 
 /* Progress bar container */
 #progress-bar-container {
-    max-width: 300px;
+    max-width: 400px;
+    width: 80%;
     margin: 10px auto;
 }
 
 /* Title and End Screens */
 .screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 400px;
+    width: 100vw;
+    height: 60vh;
+    max-width: 540px;
+    max-height: 600px;
+    min-width: 220px;
+    min-height: 220px;
     background: linear-gradient(135deg, #eaf6fb 60%, #8BD1CB 100%);
     border-radius: 16px;
     box-shadow: 0 2px 12px rgba(46,157,247,0.08);
     margin: 0 auto;
-    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 h1 {
     text-align: center;
-    color: #2E9DF7;
+    color: #174A7C; /* Dark blue for better contrast */
     font-size: 2em;
     margin-top: 24px;
     margin-bottom: 16px;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
 }
 
-/* Main Button Style */
+/* Main Button Style - higher contrast */
 .main-btn {
     background: #FFC907;
-    color: #2E9DF7;
+    color: #174A7C; /* Dark blue text for contrast */
     border: none;
     border-radius: 24px;
     padding: 14px 40px;
@@ -107,15 +117,15 @@ h1 {
 }
 
 .main-btn:hover, .main-btn:focus {
-    background: #2E9DF7;
+    background: #174A7C;
     color: #FFC907;
     outline: none;
 }
 
-/* End Game Message */
+/* End Game Message - higher contrast */
 #end-message {
     font-size: 1.2em;
-    color: #2E9DF7;
+    color: #174A7C; /* Dark blue for contrast */
     margin-bottom: 24px;
     text-align: center;
     padding: 16px 20px;
@@ -124,14 +134,133 @@ h1 {
     margin-left: auto;
     margin-right: auto;
     letter-spacing: 0.5px;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
 }
 
-/* Responsive game area */
+/* Footer - higher contrast */
+footer {
+    background: #eaf6fb;
+    color: #174A7C; /* Dark blue for contrast */
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    z-index: 100;
+}
+
+footer span {
+    color: #174A7C; /* Dark blue for contrast */
+    font-weight: bold;
+}
+
+footer a {
+    color: #FFC907; /* Yellow for links, high contrast on blue */
+    text-decoration: underline;
+    font-weight: bold;
+    margin-left: 12px;
+    transition: color 0.2s;
+}
+
+footer a:hover, footer a:focus {
+    color: #174A7C; /* Dark blue on hover for contrast */
+    background: #FFC907;
+    border-radius: 6px;
+    padding: 2px 6px;
+}
+
+/* Difficulty select branded styles - higher contrast */
+.difficulty-select {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 16px;
+    padding: 10px 0;
+}
+
+.difficulty-label {
+    font-weight: bold;
+    color: #174A7C; /* Dark blue for contrast */
+    font-size: 1.1em;
+    margin-right: 10px;
+    letter-spacing: 0.5px;
+}
+
+.difficulty-dropdown {
+    padding: 8px 24px;
+    border-radius: 18px;
+    border: 2px solid #FFC907;
+    background: #FFD600; /* Darker yellow for contrast */
+    color: #174A7C;      /* Dark blue text */
+    font-size: 1.1em;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(46,157,247,0.08);
+    outline: none;
+    cursor: pointer;
+    transition: border 0.2s, background 0.2s;
+}
+
+.difficulty-dropdown:focus,
+.difficulty-dropdown:hover {
+    border-color: #174A7C;
+    background: #FFF; /* White background for max contrast */
+    color: #174A7C;
+}
+
+/* Responsive game area: scale to screen, but not too large */
+#game-area {
+    width: 100vw;
+    height: 60vh;
+    max-width: 540px;
+    max-height: 600px;
+    min-width: 220px;
+    min-height: 220px;
+    margin: 0 auto;
+    background: #eaf6fb;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(46,157,247,0.08);
+    position: relative;
+}
+
+/* Title and End Screens: match game area size */
+.screen {
+    width: 100vw;
+    height: 60vh;
+    max-width: 540px;
+    max-height: 600px;
+    min-width: 220px;
+    min-height: 220px;
+    background: linear-gradient(135deg, #eaf6fb 60%, #8BD1CB 100%);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(46,157,247,0.08);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Progress bar container: scale with game area */
+#progress-bar-container {
+    max-width: 400px;
+    width: 80%;
+    margin: 10px auto;
+}
+
+/* Responsive for small screens */
 @media (max-width: 600px) {
-    #game-area {
-        max-width: 240px;
-        height: 300px;
+    #game-area,
+    .screen {
+        width: 98vw;
+        height: 60vw;
+        max-width: 98vw;
+        max-height: 98vw;
+        min-width: 180px;
+        min-height: 180px;
+        padding: 0 4px;
     }
     #progress-bar-container {
         max-width: 200px;
@@ -139,11 +268,6 @@ h1 {
     .drop {
         width: 34px;
         height: 46px;
-    }
-    .screen {
-        height: 300px;
-        max-width: 240px;
-        padding: 0 8px;
     }
     h1 {
         font-size: 1.3em;
@@ -151,42 +275,49 @@ h1 {
     .main-btn {
         padding: 10px 24px;
         font-size: 1em;
-        margin-top: 2px; /* Reduce top margin for play again button */
+        margin-top: 2px;
         margin-bottom: 0;
     }
     #end-message {
         margin-top: 10px;
-        margin-bottom: 2px; /* Reduce bottom margin for mobile */
+        margin-bottom: 2px;
     }
 }
 
-/* Progress bar container */
-#progress-bar-container {
-    max-width: 300px;
-    margin: 10px auto;
+/* Footer - high contrast */
+.cw-footer {
+    background: #174A7C; /* Dark blue for high contrast */
+    color: #FFF;         /* White text */
+    text-align: center;
+    padding: 16px 0;
+    border-radius: 0 0 16px 16px;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    z-index: 100;
 }
 
-/* Responsive game area */
-@media (max-width: 600px) {
-    #game-area {
-        max-width: 240px;
-        height: 300px;
-    }
-    #progress-bar-container {
-        max-width: 200px;
-    }
-    .bucket {
-        width: 40px;
-        height: 40px;
-    }
-    .bucket::before {
-        width: 24px;
-        height: 10px;
-        top: -10px;
-        border-width: 2px;
-    }
-    .drop {
-        width: 34px;
-        height: 46px;
-    }
+.cw-footer span {
+    color: #FFF;         /* White text for contrast */
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.cw-footer a {
+    color: #FFC907;      /* Yellow for link, high contrast */
+    text-decoration: underline;
+    font-weight: bold;
+    margin-left: 4px;
+    transition: color 0.2s, background 0.2s;
+}
+
+.cw-footer a:hover, .cw-footer a:focus {
+    color: #174A7C;      /* Dark blue on hover */
+    background: #FFC907;
+    border-radius: 6px;
+    padding: 2px 6px;
 }

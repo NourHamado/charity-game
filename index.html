@@ -5,14 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Charity Water Game</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Add Montserrat font for charity: water branding -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body style="font-family:'Montserrat', sans-serif;">
     <h1>Droplet in the Bucket</h1>
     <!-- Title Screen -->
     <div id="title-screen" class="screen">
         <!-- Charity: water logo at top of start page -->
         <div style="width:100%; text-align:center; margin-bottom:12px;">
             <img src="img/cw_logo_horizontal.png" alt="Charity: water logo" style="height:22px; max-width:60%; object-fit:contain;">
+        </div>
+        <!-- Difficulty selection -->
+        <div id="difficulty-select" class="difficulty-select">
+            <label for="difficulty" class="difficulty-label">Difficulty:</label>
+            <select id="difficulty" class="difficulty-dropdown">
+                <option value="easy">Easy</option>
+                <option value="normal" selected>Normal</option>
+                <option value="hard">Hard</option>
+            </select>
         </div>
         <button id="start-btn" class="main-btn">Start</button>
     </div>
@@ -39,5 +50,10 @@
         <button id="play-again-btn" class="main-btn">Play Again</button>
     </div>
     <script src="script.js"></script>
+    <!-- Footer with charity: water links -->
+    <footer class="cw-footer">
+        <span>Learn more at</span>
+        <a href="https://www.charitywater.org/" target="_blank">charity: water</a>
+    </footer>
 </body>
 </html>
