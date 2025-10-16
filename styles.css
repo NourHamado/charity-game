@@ -1,0 +1,192 @@
+/* Charity: water Brand Colors
+
+Primary Colors:
+- Yellow:     #FFC907
+- Blue:       #2E9DF7
+
+Secondary Colors:
+- Light Blue: #8BD1CB
+- Green:      #4FCB53
+- Orange:     #FF902A
+- Red:        #F5402C
+- Dark Green: #159A48
+- Pink:       #F16061
+
+*/
+
+/* Remove .bucket styles since we use an image now */
+
+/* Drop sprite */
+.drop {
+    position: absolute;
+    width: 48px;
+    height: 65px;
+    /* Remove background and border for image drops */
+    /* animation: fall linear; */
+}
+
+/* Splash animation */
+.splash {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(76,203,83,0.5);
+    pointer-events: none;
+    animation: splash 0.4s linear;
+}
+
+@keyframes splash {
+    0% { opacity: 1; transform: scale(0.8);}
+    100% { opacity: 0; transform: scale(1.5);}
+}
+
+/* Progress bar flash */
+#progress-bar-fill.flash-green {
+    background: #4FCB53 !important;
+    transition: background 0.2s;
+}
+#progress-bar-fill.flash-red {
+    background: #F5402C !important;
+    transition: background 0.2s;
+}
+
+/* Center and narrow game area */
+#game-area {
+    max-width: 340px;
+    margin: 0 auto;
+    height: 400px;
+    background: #eaf6fb;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(46,157,247,0.08);
+}
+
+/* Progress bar container */
+#progress-bar-container {
+    max-width: 300px;
+    margin: 10px auto;
+}
+
+/* Title and End Screens */
+.screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    background: linear-gradient(135deg, #eaf6fb 60%, #8BD1CB 100%);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(46,157,247,0.08);
+    margin: 0 auto;
+    max-width: 340px;
+}
+
+h1 {
+    text-align: center;
+    color: #2E9DF7;
+    font-size: 2em;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Main Button Style */
+.main-btn {
+    background: #FFC907;
+    color: #2E9DF7;
+    border: none;
+    border-radius: 24px;
+    padding: 14px 40px;
+    font-size: 1.2em;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(46,157,247,0.08);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 16px;
+}
+
+.main-btn:hover, .main-btn:focus {
+    background: #2E9DF7;
+    color: #FFC907;
+    outline: none;
+}
+
+/* End Game Message */
+#end-message {
+    font-size: 1.2em;
+    color: #2E9DF7;
+    margin-bottom: 24px;
+    text-align: center;
+    padding: 16px 20px;
+    font-weight: 500;
+    max-width: 260px;
+    margin-left: auto;
+    margin-right: auto;
+    letter-spacing: 0.5px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Responsive game area */
+@media (max-width: 600px) {
+    #game-area {
+        max-width: 240px;
+        height: 300px;
+    }
+    #progress-bar-container {
+        max-width: 200px;
+    }
+    .drop {
+        width: 34px;
+        height: 46px;
+    }
+    .screen {
+        height: 300px;
+        max-width: 240px;
+        padding: 0 8px;
+    }
+    h1 {
+        font-size: 1.3em;
+    }
+    .main-btn {
+        padding: 10px 24px;
+        font-size: 1em;
+        margin-top: 2px; /* Reduce top margin for play again button */
+        margin-bottom: 0;
+    }
+    #end-message {
+        margin-top: 10px;
+        margin-bottom: 2px; /* Reduce bottom margin for mobile */
+    }
+}
+
+/* Progress bar container */
+#progress-bar-container {
+    max-width: 300px;
+    margin: 10px auto;
+}
+
+/* Responsive game area */
+@media (max-width: 600px) {
+    #game-area {
+        max-width: 240px;
+        height: 300px;
+    }
+    #progress-bar-container {
+        max-width: 200px;
+    }
+    .bucket {
+        width: 40px;
+        height: 40px;
+    }
+    .bucket::before {
+        width: 24px;
+        height: 10px;
+        top: -10px;
+        border-width: 2px;
+    }
+    .drop {
+        width: 34px;
+        height: 46px;
+    }
+}

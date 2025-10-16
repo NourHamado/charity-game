@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charity Water Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Droplet in the Bucket</h1>
+    <!-- Title Screen -->
+    <div id="title-screen" class="screen">
+        <!-- Charity: water logo at top of start page -->
+        <div style="width:100%; text-align:center; margin-bottom:12px;">
+            <img src="img/cw_logo_horizontal.png" alt="Charity: water logo" style="height:22px; max-width:60%; object-fit:contain;">
+        </div>
+        <button id="start-btn" class="main-btn">Start</button>
+    </div>
+    <!-- Game Area -->
+    <div id="game-area" style="display:none; position:relative; width:100%; height:400px; background:#eaf6fb; overflow:hidden;">
+        <!-- Charity: water logo above progress bar -->
+        <div style="width:100%; text-align:center; margin-top:8px; margin-bottom:4px;">
+            <img src="img/cw_logo_horizontal.png" alt="Charity: water logo" style="height:19px; max-width:80%; object-fit:contain;">
+        </div>
+        <div id="progress-bar-container" style="width:80%; margin:10px auto;">
+            <div id="progress-bar-bg" style="width:100%; height:12px; background:#ccc; border-radius:12px;">
+                <div id="progress-bar-fill" style="width:0%; height:100%; background:#2E9DF7; border-radius:12px; transition:width 0.2s;"></div>
+            </div>
+        </div>
+        <!-- Bucket image and drops will be added dynamically -->
+    </div>
+    <!-- End Screen -->
+    <div id="end-screen" class="screen" style="display:none;">
+        <!-- Charity: water logo at top of end screen -->
+        <div style="width:100%; text-align:center; margin-bottom:12px;">
+            <img src="img/cw_logo_horizontal.png" alt="Charity: water logo" style="height:22px; max-width:60%; object-fit:contain;">
+        </div>
+        <p id="end-message"></p>
+        <button id="play-again-btn" class="main-btn">Play Again</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
