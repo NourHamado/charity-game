@@ -31,15 +31,15 @@ const DIFFICULTY_SETTINGS = {
     },
     normal: {
         winGoal: 100,
-        dropSpeed: 2.2,
+        dropSpeed: 2.5,
         dropSpawnRate: 700,
-        dirtyRatio: 0.2
+        dirtyRatio: 0.25
     },
     hard: {
         winGoal: 100,        // Must overfill bucket to win
-        dropSpeed: 3.5,      // Drops fall faster
+        dropSpeed: 4,      // Drops fall faster
         dropSpawnRate: 500,  // Drops spawn more often
-        dirtyRatio: 0.35     // More dirty drops
+        dirtyRatio: 0.32     // More dirty drops
     }
 };
 
@@ -198,7 +198,10 @@ function spawnDrop() {
     }
     // Use actual game area size for drop sizing
     const gw = getGameWidth();
-    const dropW = Math.max(34, Math.min(48, gw * 0.13)); // 13% of game area width, min 34, max 48
+    // Scale drops with game width. Keep a sensible minimum for mobile,
+    // and allow much larger drops on wide screens (max 90px).
+    // Formula: a percentage of gw, clamped between min and max.
+    const dropW = Math.max(34, Math.min(90, Math.round(gw * 0.11)));
     const x = Math.random() * (gw - dropW);
     // Random clean/dirty
     const isDirty = Math.random() < dirtyRatio; // More likely to be dirty as dirtyRatio increases
